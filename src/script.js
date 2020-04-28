@@ -10,10 +10,8 @@ navigator.share = navigator.share || (function(){
 	// sms on ios 'sms:;body='+payload, on Android 'sms:?body='+payload
 	let shareUrls = {
     	whatsapp: payload => (isDesktop ? 'https://api.whatsapp.com/send?text=' : 'whatsapp://send?text=') + payload,
-    	telegram: payload => (isDesktop ? 'https://telegram.me/share/msg?url='+location.host+'&text=' : 'tg://msg?text=') + payload,
     	facebook: (payload, fbid, url) => !fbid ? "" : (isDesktop ? 'https://www.facebook.com/dialog/share?app_id='+fbid+'&display=popup&href='+url+'&redirect_uri='+encodeURIComponent(location.href)+'&quote=' : 'fb-messenger://share/?message=') + payload,
     	email:    (payload, title) => 'mailto:?subject='+title+'&body='+payload,
-    	sms:      payload => 'sms:?body='+payload
 	};
 
 	class WebShareUI{
@@ -31,9 +29,7 @@ navigator.share = navigator.share || (function(){
                 this.$root     = el.querySelector('.web-share');
                 this.$whatsapp = el.querySelector('.web-share-whatsapp');
                 this.$facebook = el.querySelector('.web-share-facebook');
-                this.$telegram = el.querySelector('.web-share-telegram');
                 this.$email    = el.querySelector('.web-share-email');
-                this.$sms      = el.querySelector('.web-share-sms');
                 this.$copy     = el.querySelector('.web-share-copy');
                 this.$copy.onclick = () => this._copy();
                 this.$root.onclick = () => this._hide();
@@ -52,9 +48,7 @@ navigator.share = navigator.share || (function(){
 			title = encodeURIComponent(title);
 	    	this.$whatsapp.href = shareUrls.whatsapp(payload);
 	    	this.$facebook.href = shareUrls.facebook(payload, facebookId, payloadObj.url);
-	    	this.$telegram.href = shareUrls.telegram(payload);
 	    	this.$email.href = shareUrls.email(payload, title);
-	    	this.$sms.href = shareUrls.sms(payload);
 		}
 
 		_copy(){
